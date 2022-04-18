@@ -14,7 +14,7 @@ class FileStorage:
         if cls:
             for key, val in FileStorage.__objects.items():
                 if isinstance(val, cls):
-                    cls_dict.update(val)
+                    cls_dict.update({key: val})
             return cls_dict
         else:
             return FileStorage.__objects
@@ -39,8 +39,8 @@ class FileStorage:
         if obj:
             class_name = type(obj).__name__
             key_to_find = class_name + "." + obj.id
-            if key_to_find in FileStorage.__objects:
-                del FileStorage[key_to_find]
+            if key_to_find in FileStorage.__objects.keys():
+                del FileStorage.__objects[key_to_find]
             else:
                 pass
         else:
