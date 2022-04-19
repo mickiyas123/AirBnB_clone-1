@@ -37,14 +37,14 @@ class DBStorage:
         from models.state import State
         from models.user import User
 
+        all_cls = {}
+
         if cls:
-            one_cls = {}
             all_obj = self.__session.query(cls).all()
             for obj in all_obj:
-                one_cls.update({type(obj).__name__ + "." + obj.id: obj})
-            return one_cls
-        elif cls==None:
-            all_cls = {}
+                all_cls.update({type(obj).__name__ + "." + obj.id: obj})
+            return all_cls
+        else:
             amenity_obj = self.__session.query(Amenity).all()
             for obj in amenity_obj:
                 all_cls.update({type(obj).__name__ + "." + obj.id: obj})
