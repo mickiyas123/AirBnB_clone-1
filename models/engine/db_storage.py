@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models.user import Base
+from models.base_model import Base
 
 un = os.getenv('HBNB_MYSQL_USER')  # un=username
 pwd = os.getenv('HBNB_MYSQL_PWD')
@@ -24,7 +24,7 @@ class DBStorage:
                 .format(un, pwd, host, db),
                 pool_pre_ping=True)
         if env == 'test':
-            Base.metadata.drop_all()
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """Query on the current database session
@@ -43,7 +43,7 @@ class DBStorage:
             for obj in all_obj:
                 one_cls.update({type(obj).__name__ + "." + obj.id: obj})
             return one_cls
-        elif cls=None:
+        elif cls==None:
             all_cls = {}
             amenity_obj = self.__session.query(Amenity).all()
             for obj in amenity_obj:
